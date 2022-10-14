@@ -1,10 +1,14 @@
 import { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
+import { Film, getFilms } from "~/api/films";
 
 // the loader is server side.
-export const loader: LoaderFunction = async () => {
-  const response = await fetch("https://ghibliapi.herokuapp.com/films");
-  return response.json();
+export const loader: LoaderFunction = async ({ request }) => {
+  // get url from request
+  const url = new URL(request.url);
+  // get title parameter.
+  const title = url.searchParams.get("title");
+  return await getFilms(title);
 };
 
 export const links: LinksFunction = () => {
@@ -24,13 +28,14 @@ const index = () => {
     <div className="p-16 font-sans">
       <div className="text-5xl font-bold text-center">Sudio Ko Kim</div>
       {/* html form get */}
-      <form action="" className="py-5">
+      <Form reloadDocument method="get" className="py-5">
         <label className="font-bold">
           Search{" "}
           <input
             type="text"
             placeholder="type a title ..."
             className="border-2 rounded py-2 px-3"
+            name="title"
           />
         </label>
         <button
@@ -39,9 +44,10 @@ const index = () => {
         >
           Search
         </button>
-      </form>
+      </Form>
+      {/* <pre>{JSON.stringify(films, null, 3)}</pre> */}
       <div className="grid grid-cols-4 gap-4">
-        {films.map((film: any) => {
+        {films.map((film) => {
           return (
             // hover:scale-105 is used to increase 5% of object while hover.
             // eslint-disable-next-line react/jsx-key
