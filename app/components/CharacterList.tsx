@@ -12,7 +12,7 @@ export default function CharacterList({ characters }: CharacterListProps) {
       <ul className="flex flex-col space-y-3 my-3">
         {characters?.map((character) => (
           // eslint-disable-next-line react/jsx-key
-          <li>
+          <li key={character.id}>
             <NavLink
               to={"characters/" + character.id}
               prefetch="intent"
