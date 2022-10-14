@@ -28,6 +28,7 @@ const index = () => {
     <div className="p-16 font-sans">
       <div className="text-5xl font-bold text-center">Sudio Ko Kim</div>
       {/* html form get */}
+      {/* recommend to use remix form */}
       <Form reloadDocument method="get" className="py-5">
         <label className="font-bold">
           Search{" "}
