@@ -12,7 +12,23 @@ export default function CharacterList({ characters }: CharacterListProps) {
       <ul className="flex flex-col space-y-3 my-3">
         {characters?.map((character) => (
           // eslint-disable-next-line react/jsx-key
-          <li>{character.name}</li>
+          <li>
+            <NavLink
+              to={"characters/" + character.id}
+              prefetch="intent"
+              className={(
+                { isActive } // is active is from the nav link
+              ) =>
+                `w-full hover:underline p-3 rounded border border-slate-400 inline-block ${
+                  isActive
+                    ? "bg-slate-300 text-black font-bold border-2"
+                    : "text-blue-500 "
+                } `
+              }
+            >
+              {character.name}
+            </NavLink>
+          </li>
         ))}
       </ul>
     </div>
