@@ -4,11 +4,12 @@ import invariant from "tiny-invariant";
 import { useLoaderData } from "@remix-run/react";
 import type { Film } from "~/api/films";
 import FilmBanner from "~/components/FilmBanner";
+import CharacterList from "../../components/CharacterList";
 
 export const loader: LoaderFunction = async ({ params }) => {
   invariant(params.filmId, "expected params.filmId"); // error ocuurs only when left side is false.
   const film = await getFileById(params.filmId);
-  console.log("fetching film", film.title);
+  console.log("fetching film", film);
   return film;
 };
 
@@ -17,6 +18,12 @@ const film = () => {
   return (
     <div>
       <FilmBanner film={film} />
+      <div className="p-10">
+        <p>{film.description}</p>
+      </div>
+      <div className="flex py-5 space-x-5">
+        <CharacterList characters={film.characters} />
+      </div>
     </div>
   );
 };
