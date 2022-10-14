@@ -17,3 +17,11 @@ export const getFilms = async (title?: string | null) => {
       : true;
   });
 };
+
+export const getFileById = async (filmId: string) => {
+  const response = await fetch(
+    `https://ghibliapi.herokuapp.com/films/${filmId}`
+  );
+  const film: Film = await response.json();
+  return film;
+};
