@@ -56,6 +56,7 @@ const index = () => {
               title={film.title} // title is used to show while hover.
               to={film.id}
               key={film.id}
+              prefetch="none" //prefetch data for the next page even before the user clicks into it.
               className="hover:shadow-2xl hover:scale-105 hover:font-bold cursor-pointer"
             >
               <div>{film.title}</div>
