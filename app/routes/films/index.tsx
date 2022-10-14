@@ -1,5 +1,5 @@
 import { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { Film, getFilms } from "~/api/films";
 
 // the loader is server side.
@@ -52,10 +52,15 @@ const index = () => {
           return (
             // hover:scale-105 is used to increase 5% of object while hover.
             // eslint-disable-next-line react/jsx-key
-            <div className="hover:shadow-2xl hover:scale-105 hover:font-bold cursor-pointer">
+            <Link
+              title={film.title} // title is used to show while hover.
+              to={film.id}
+              key={film.id}
+              className="hover:shadow-2xl hover:scale-105 hover:font-bold cursor-pointer"
+            >
               <div>{film.title}</div>
               <img src={film.image} alt={film.title} />
-            </div>
+            </Link>
           );
         })}
       </div>
