@@ -5,6 +5,7 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import type { Film } from "~/api/films";
 import FilmBanner from "~/components/FilmBanner";
 import CharacterList from "../../components/CharacterList";
+import CommentsList from "~/components/CommentsList";
 
 export const meta: MetaFunction = ({ data }) => {
   return { title: data.title, description: data.description };
@@ -26,8 +27,9 @@ const film = () => {
         <p>{film.description}</p>
         <div className="flex py-5 space-x-5">
           <CharacterList characters={film.characters} />
-          <div className="flex-1">
+          <div className="flex-1 flex flex-col justify-between">
             <Outlet />
+            <CommentsList filmId={film.id} comments={film.comments || []} />
           </div>
         </div>
       </div>
