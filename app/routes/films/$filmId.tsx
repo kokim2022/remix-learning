@@ -9,7 +9,7 @@ import CharacterList from "../../components/CharacterList";
 export const loader: LoaderFunction = async ({ params }) => {
   invariant(params.filmId, "expected params.filmId"); // error ocuurs only when left side is false.
   const film = await getFileById(params.filmId);
-  console.log("fetching film", film);
+  // console.log("fetching film", film);
   return film;
 };
 
