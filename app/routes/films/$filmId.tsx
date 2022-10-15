@@ -1,10 +1,9 @@
 import type {
   ActionFunction,
   LoaderFunction,
-  MetaFunction} from "@remix-run/node";
-import {
-  redirect,
+  MetaFunction,
 } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { getFileById } from "../../api/films";
 import invariant from "tiny-invariant";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -23,6 +22,22 @@ export const action: ActionFunction = async ({ request, params }) => {
     message: body.get("message") as string,
     filmId: params.filmId,
   };
+
+  const errors = { name: "", message: "" };
+
+  if (!comment.name) {
+    errors.name = "please provide your name";
+  }
+
+  if (!comment.message) {
+    errors.message = "please provide your message";
+  }
+
+  if (errors.name || errors.message) {
+    const values = Object.fromEntries(body);
+    console.log({ errors, values })
+    return { errors, values };
+  }
 
   await addComment(comment);
 

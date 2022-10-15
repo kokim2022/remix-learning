@@ -1,5 +1,5 @@
 import type { Comment } from "~/api/comments";
-import { Form, useTransition } from "@remix-run/react";
+import { Form, useActionData, useTransition } from "@remix-run/react";
 
 type CommentsListProps = {
   filmId: string;
@@ -9,7 +9,11 @@ type CommentsListProps = {
 export default function CommentsList({ filmId, comments }: CommentsListProps) {
   // trigger transition while making post request ->
   const transition = useTransition();
-  const inputStyle = `border border-slate-400 rounded py-2 px-3 inline-block w-full`;
+  const actionData = useActionData();
+  const inputStyle = (fieldName: string) =>
+    `border border-slate-400 rounded py-2 px-3 inline-block w-full ${
+      actionData?.errors[fieldName] ? " border-red-500" : ""
+    }`;
   return (
     <div>
       <h2 className="text-3xl mb-2">Community Comments</h2>
@@ -25,13 +29,18 @@ export default function CommentsList({ filmId, comments }: CommentsListProps) {
         ))}
 
         <div className="p-4 rounded border border-slate-400">
-          <Form method="post">
+          <Form method="post" action={`/films/${filmId}`}>  
             <fieldset disabled={transition.state == "submitting"}>
               <label className="inline-block my-2">Name:</label>
-              <input name="name" type="text" className={inputStyle} />
-
+              <input name="name" type="text" className={inputStyle("name")} />
+              {actionData?.errors.name && (
+                <p className="text-red-500">{actionData.errors.name}</p>
+              )}
               <label className="inline-block my-2">Message:</label>
-              <textarea name="message" className={inputStyle} />
+              <textarea name="message" className={inputStyle("message")} />
+              {actionData?.errors.message && (
+                <p className="text-red-500">{actionData.errors.name}</p>
+              )}
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2"
