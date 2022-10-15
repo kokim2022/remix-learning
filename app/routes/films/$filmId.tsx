@@ -1,10 +1,14 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { getFileById } from "../../api/films";
 import invariant from "tiny-invariant";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import type { Film } from "~/api/films";
 import FilmBanner from "~/components/FilmBanner";
 import CharacterList from "../../components/CharacterList";
+
+export const meta: MetaFunction = ({ data }) => {
+  return { title: data.title, description: data.description };
+};
 
 export const loader: LoaderFunction = async ({ params }) => {
   invariant(params.filmId, "expected params.filmId"); // error ocuurs only when left side is false.

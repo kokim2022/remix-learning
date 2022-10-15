@@ -4,6 +4,7 @@ import type { FilmCharacter } from "../../../api/films";
 import { getFilmCharacter } from "../../../api/films";
 import { useCatch, useLoaderData } from "@remix-run/react";
 
+
 export const loader: LoaderFunction = async ({ params }) => {
   invariant(params.characterId, "expected params.characterId");
   return getFilmCharacter(params.characterId);
