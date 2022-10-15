@@ -1,4 +1,10 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type {
+  ActionFunction,
+  LoaderFunction,
+  MetaFunction} from "@remix-run/node";
+import {
+  redirect,
+} from "@remix-run/node";
 import { getFileById } from "../../api/films";
 import invariant from "tiny-invariant";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -6,6 +12,22 @@ import type { Film } from "~/api/films";
 import FilmBanner from "~/components/FilmBanner";
 import CharacterList from "../../components/CharacterList";
 import CommentsList from "~/components/CommentsList";
+import { addComment } from "~/api/comments";
+
+export const action: ActionFunction = async ({ request, params }) => {
+  invariant(params.filmId, "expected params.filmId"); // error ocuurs only when left side is false.
+  const body = await request.formData();
+
+  const comment = {
+    name: body.get("name") as string,
+    message: body.get("message") as string,
+    filmId: params.filmId,
+  };
+
+  await addComment(comment);
+
+  return redirect(`/films/${params.filmId}`);
+};
 
 export const meta: MetaFunction = ({ data }) => {
   return { title: data.title, description: data.description };

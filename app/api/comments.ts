@@ -1,5 +1,5 @@
 export type Comment = {
-  id: string;
+  id?: string;
   name: string;
   message: string;
   filmId: string;

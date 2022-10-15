@@ -1,5 +1,5 @@
 import type { Comment } from "~/api/comments";
-import { Form } from "@remix-run/react";
+import { Form, useTransition } from "@remix-run/react";
 
 type CommentsListProps = {
   filmId: string;
@@ -7,6 +7,8 @@ type CommentsListProps = {
 };
 
 export default function CommentsList({ filmId, comments }: CommentsListProps) {
+  // trigger transition while making post request ->
+  const transition = useTransition();
   const inputStyle = `border border-slate-400 rounded py-2 px-3 inline-block w-full`;
   return (
     <div>
@@ -24,7 +26,7 @@ export default function CommentsList({ filmId, comments }: CommentsListProps) {
 
         <div className="p-4 rounded border border-slate-400">
           <Form method="post">
-            <fieldset>
+            <fieldset disabled={transition.state == "submitting"}>
               <label className="inline-block my-2">Name:</label>
               <input name="name" type="text" className={inputStyle} />
 
@@ -34,7 +36,9 @@ export default function CommentsList({ filmId, comments }: CommentsListProps) {
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2"
               >
-                Add Comment
+                {transition.state === "submitting"
+                  ? "Adding..."
+                  : "Add comment"}{" "}
               </button>
             </fieldset>
           </Form>
